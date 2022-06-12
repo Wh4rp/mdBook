@@ -854,7 +854,7 @@ fn add_playground_pre(
             }
 
             if flag {
-                if playground_config.languages[0] == "rust" {
+                if classes.contains("language-rust") {
                     add_playground_pre_rust(playground_config, edition, classes, text, code)
                 } else {
                     format!(
