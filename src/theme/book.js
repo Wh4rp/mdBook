@@ -15,10 +15,8 @@ function playground_text(playground) {
     }
 }
 
-// Global variable, shared between modules
 function playground_languague(playground) {
     let code_block = playground.querySelector("code");
-    // console.log(code_block.classList[0].substring(9));
     return code_block.classList[0].substring(9);
 }
 
@@ -156,6 +154,88 @@ function playground_languague(playground) {
         .catch(error => result_block.innerText = "Playground Communication: " + error.message);
     }
 
+    function run_python_code(code_block) {
+        console.log('runing python code')
+        var result_block = code_block.querySelector(".result");
+        if (!result_block) {
+            result_block = document.createElement('code');
+            result_block.className = 'result hljs language-bash';
+
+            code_block.append(result_block);
+        }
+
+        let text = playground_text(code_block);
+
+        var params = {
+            language: "python",
+            code: text,
+            datain: ''
+        };
+
+        result_block.innerText = "Running...";
+
+        fetch_with_timeout("http://127.0.0.1:4000/runner", {
+            headers: {
+                'Content-Type': "application/json"
+            },
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify(params)
+        })
+        .then(response => response.json())
+        .then(response => {
+            if (response.result.trim() === '') {
+                result_block.innerText = "No output";
+                result_block.classList.add("result-no-output");
+            } else {
+                result_block.innerText = response.result;
+                result_block.classList.remove("result-no-output");
+            }
+        })
+        .catch(error => result_block.innerText = "Playground Communication: " + error.message);
+    }
+
+    function run_cpp_code(code_block) {
+        console.log('runing cpp code')
+        var result_block = code_block.querySelector(".result");
+        if (!result_block) {
+            result_block = document.createElement('code');
+            result_block.className = 'result hljs language-bash';
+
+            code_block.append(result_block);
+        }
+
+        let text = playground_text(code_block);
+
+        var params = {
+            language: "cpp",
+            code: text,
+            datain: ''
+        };
+
+        result_block.innerText = "Running...";
+
+        fetch_with_timeout("http://127.0.0.1:4000/runner", {
+            headers: {
+                'Content-Type': "application/json"
+            },
+            method: 'POST',
+            mode: 'cors',
+            body: JSON.stringify(params)
+        })
+        .then(response => response.json())
+        .then(response => {
+            if (response.result.trim() === '') {
+                result_block.innerText = "No output";
+                result_block.classList.add("result-no-output");
+            } else {
+                result_block.innerText = response.result;
+                result_block.classList.remove("result-no-output");
+            }
+        })
+        .catch(error => result_block.innerText = "Playground Communication: " + error.message);
+    }
+
     // Syntax highlighting Configuration
     hljs.configure({
         tabReplace: '    ', // 4 spaces
@@ -259,9 +339,28 @@ function playground_languague(playground) {
         runCodeButton.setAttribute('aria-label', runCodeButton.title);
 
         buttons.insertBefore(runCodeButton, buttons.firstChild);
-        runCodeButton.addEventListener('click', function (e) {
-            run_rust_code(pre_block);
-        });
+        console.log(pre_block);
+        console.log(playground_languague(pre_block));
+
+        switch(playground_languague(pre_block)) {
+            case 'rust':
+                runCodeButton.addEventListener('click', function (e) {
+                    run_rust_code(pre_block);
+                });
+                break;
+            case 'python':
+                runCodeButton.addEventListener('click', function (e) {
+                    run_python_code(pre_block);
+                });
+                break;
+            case 'cpp':
+                runCodeButton.addEventListener('click', function (e) {
+                    run_cpp_code(pre_block);
+                });
+                break;
+            default:
+                break;
+        }
 
         if (window.playground_copyable) {
             var copyCodeClipboardButton = document.createElement('button');
