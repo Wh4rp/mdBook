@@ -98,6 +98,7 @@ function playground_text(playground) {
     }
 
     function run_rust_code(code_block) {
+        console.log('runing rust code')
         var result_block = code_block.querySelector(".result");
         if (!result_block) {
             result_block = document.createElement('code');
