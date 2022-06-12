@@ -630,6 +630,8 @@ pub struct Playground {
     pub copy_js: bool,
     /// Display line numbers on playground snippets. Default: `false`.
     pub line_numbers: bool,
+    /// Set's the language the playground will work with. Default: `"rust"`.
+    pub languages: Vec<String>,
     /// Display the run button. Default: `true`
     pub runnable: bool,
 }
@@ -641,6 +643,7 @@ impl Default for Playground {
             copyable: true,
             copy_js: true,
             line_numbers: false,
+            languages: vec![String::from("rust")],
             runnable: true,
         }
     }
@@ -784,6 +787,7 @@ mod tests {
             copyable: true,
             copy_js: true,
             line_numbers: false,
+            languages: vec![String::from("rust")],
             runnable: true,
         };
         let html_should_be = HtmlConfig {

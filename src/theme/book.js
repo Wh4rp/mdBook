@@ -15,6 +15,13 @@ function playground_text(playground) {
     }
 }
 
+// Global variable, shared between modules
+function playground_languague(playground) {
+    let code_block = playground.querySelector("code");
+    // console.log(code_block.classList[0].substring(9));
+    return code_block.classList[0].substring(9);
+}
+
 (function codeSnippets() {
     function fetch_with_timeout(url, options, timeout = 6000) {
         return Promise.race([
