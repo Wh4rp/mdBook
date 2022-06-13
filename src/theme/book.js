@@ -174,7 +174,7 @@ function playground_languague(playground) {
 
         result_block.innerText = "Running...";
 
-        fetch_with_timeout("http://127.0.0.1:4000/runner", {
+        fetch_with_timeout("https://API-Lang.wh4rp.repl.co/runner", {
             headers: {
                 'Content-Type': "application/json"
             },
@@ -215,7 +215,7 @@ function playground_languague(playground) {
 
         result_block.innerText = "Running...";
 
-        fetch_with_timeout("http://127.0.0.1:4000/runner", {
+        fetch_with_timeout("https://API-Lang.wh4rp.repl.co/runner", {
             headers: {
                 'Content-Type': "application/json"
             },
